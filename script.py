@@ -2,7 +2,7 @@ import requests
 import csv
 from datetime import datetime
 
-API_KEY = "c58a4dce-b51c-4c9b-be58-149959da7006"
+API_KEY = "95632453-ba5f-4c66-aa20-c051e33b830d"
 url_2 = f"https://api.hypixel.net/playerCount?key={API_KEY}"
 
 response = requests.get(url_2)
