@@ -2,23 +2,21 @@ import requests
 import csv
 from datetime import datetime
 
-API_KEY = "95632453-ba5f-4c66-aa20-c051e33b830d"
-URL = f"https://api.hypixel.net/playerCount?key={API_KEY}"
+API_KEY = "c58a4dce-b51c-4c9b-be58-149959da7006"
+url_2 = f"https://api.hypixel.net/playerCount?key={API_KEY}"
 
-response = requests.get(URL)
+response = requests.get(url_2)
 data = response.json()
 
 if data.get("success"):
     total_players = data["playerCount"]  # Total players online
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Get current time
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    print(f"{timestamp} - Total Players Online: {total_players}")
-
-    # Append data to CSV file
-    csv_filename = "player_counts.csv"
-    with open(csv_filename, "a", newline="") as file:
+    # Append to CSV file
+    with open("player_counts.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow([timestamp, total_players])
 
+    print(f"Data saved: {timestamp}, {total_players}")
 else:
     print(f"Error: {data.get('cause')}")
