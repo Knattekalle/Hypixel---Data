@@ -4,58 +4,44 @@ from datetime import datetime
 
 API_KEY = "5fb91a80-ab5c-4943-aa32-bbdfdaa38738"
 
-# URLs for the APIs
+# API URLs
 url_playercount = f"https://api.hypixel.net/playerCount?key={API_KEY}"
 url_punishments = f"https://api.hypixel.net/v2/punishmentstats?key={API_KEY}"
 
-# Fetching player count data
-response = requests.get(url_playercount)
-data = response.json()
+# Fetch player count data
+response_playercount = requests.get(url_playercount)
+data_playercount = response_playercount.json()
 
-if data_playercount.get("success"):
-    total_players = data_playercount["playerCount"]  # Total players online
-else:
-    total_players = None  # In case of an error, set it to None
-
-# Fetching punishment stats data
+# Fetch punishment stats data
 response_punishments = requests.get(url_punishments)
 data_punishments = response_punishments.json()
 
-if data_punishments.get("success"):
-    watchdog_lastMinute = data_punishments["watchdog_lastMinute"]
-    staff_rollingDaily = data_punishments["staff_rollingDaily"]
-    watchdog_total = data_punishments["watchdog_total"]
-    watchdog_rollingDaily = data_punishments["watchdog_rollingDaily"]
-    staff_total = data_punishments["staff_total"]
-else:
-    # In case of an error, set punishment stats to None
-    watchdog_lastMinute = None
-    staff_rollingDaily = None
-    watchdog_total = None
-    watchdog_rollingDaily = None
-    staff_total = None
-
-
-# Timestamp for when the data is fetched
 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# Save player count data to the CSV file
-with open("player_counts.csv", mode="a", newline="") as file:
-    writer = csv.writer(file)
-    writer.writerow([timestamp, total_players])
+# Process player count
+if data_playercount.get("success"):
+    total_players = data_playercount["playerCount"]  
 
-print(f"Player Count Data saved: {timestamp}, Players: {total_players}")
+    with open("player_counts.csv", mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([timestamp, total_players])
 
-# Save punishment stats data to the CSV file
-with open("punishment_stats.csv", mode="a", newline="") as file:
-    writer = csv.writer(file)
-    writer.writerow([
-        timestamp, 
-        watchdog_lastMinute, 
-        staff_rollingDaily, 
-        watchdog_total, 
-        watchdog_rollingDaily, 
-        staff_total
-    ])
+    print(f"Player Count Data saved: {timestamp}, Players: {total_players}")
+else:
+    print(f"Error fetching player count: {data_playercount.get('cause')}")
 
-print(f"Punishment Stats Data saved: {timestamp}, Watchdog Last Minute: {watchdog_lastMinute}, Staff Daily: {staff_rollingDaily}")
+# Process punishment stats
+if data_punishments.get("success"):
+    watchdog_last_minute = data_punishments["watchdog_lastMinute"]
+    staff_rolling_daily = data_punishments["staff_rollingDaily"]
+    watchdog_total = data_punishments["watchdog_total"]
+    watchdog_rolling_daily = data_punishments["watchdog_rollingDaily"]
+    staff_total = data_punishments["staff_total"]
+
+    with open("punishment_stats.csv", mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([timestamp, watchdog_last_minute, staff_rolling_daily, watchdog_total, watchdog_rolling_daily, staff_total])
+
+    print(f"Punishment Data saved: {timestamp}, Watchdog Last Minute: {watchdog_last_minute}, Staff Rolling Daily: {staff_rolling_daily}")
+else:
+    print(f"Error fetching punishment stats: {data_punishments.get('cause')}")
