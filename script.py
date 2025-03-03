@@ -1,8 +1,9 @@
 import requests
 import csv
+import os
 from datetime import datetime
 
-API_KEY = "5fb91a80-ab5c-4943-aa32-bbdfdaa38738"
+API_KEY = os.getenv("HYPIXEL_API_KEY")
 
 # API URLs
 url_playercount = f"https://api.hypixel.net/playerCount?key={API_KEY}"
