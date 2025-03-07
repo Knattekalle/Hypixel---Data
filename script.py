@@ -56,12 +56,12 @@ else:
     print(f"Error fetching punishment stats: {data_punishments.get('cause')}")
 
 
-# Process counts
+# Process playercounts in the different minigames
 if data_playercount_minigames.get("success"):
     minigames_playercount = data_playercount_minigames["games"]
 
     # CSV header
-    csv_file "game_mode_player_counts.csv"
+    csv_file = "game_mode_player_counts.csv"
     file_exists = os.path.isfile(csv_file)
 
     with open(csv_file, mode="a", newline="") as file:
