@@ -69,14 +69,29 @@ if data_playercount_minigames.get("success"):
 
         # Write header only if file is new
         if not file_exists:
-            header = ["timestamp"] + list(minigames_playercount.keys())
+            # Flatten out the game modes into the header
+            header = ["timestamp"]
+            for game, details in minigames_playercount.items():
+                if "modes" in details:  # This means it has subcategories (modes)
+                    for mode in details["modes"]:
+                        header.append(f"{game}_{mode}")
+                else:
+                    header.append(game)
             writer.writerow(header)
 
-        # Extract player counts per game
-        row = [timestamp] + [minigames_playercount[game]["players"] for game in minigames_playercount]
+        # Extract player counts per game and its modes (if any)
+        row = [timestamp]
+        for game, details in minigames_playercount.items():
+            if "modes" in details:
+                # If the game has subcategories (modes), add those counts
+                for mode in details["modes"]:
+                    row.append(details["modes"][mode])
+            else:
+                # If it's a standalone game with no modes
+                row.append(details["players"])
+        
         writer.writerow(row)
 
     print(f"Game Mode Data saved: {timestamp}")
 else:
     print(f"Error fetching game mode stats: {data_playercount_minigames.get('cause')}")
-
