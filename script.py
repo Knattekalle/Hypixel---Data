@@ -73,7 +73,7 @@ if data_playercount_minigames.get("success"):
             writer.writerow(header)
 
         # Extract player counts per game
-        row = [timestamp] + [minigames_playercount[game]["player"] for game in minigames_playercount]
+        row = [timestamp] + [minigames_playercount[game]["players"] for game in minigames_playercount]
         writer.writerow(row)
 
     print(f"Game Mode Data saved: {timestamp}")
