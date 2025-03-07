@@ -26,7 +26,7 @@ data_playercount_minigames = response_playercount_minigames.json()
 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-# Process player count
+# Process player counts
 if data_playercount.get("success"):
     total_players = data_playercount["playerCount"]  
 
@@ -37,7 +37,6 @@ if data_playercount.get("success"):
     print(f"Player Count Data saved: {timestamp}, Players: {total_players}")
 else:
     print(f"Error fetching player count: {data_playercount.get('cause')}")
-
 
 # Process punishment stats
 if data_punishments.get("success"):
@@ -55,46 +54,45 @@ if data_punishments.get("success"):
 else:
     print(f"Error fetching punishment stats: {data_punishments.get('cause')}")
 
-
-# Process playercounts in the different minigames
+# Process player counts in the different minigames
 if data_playercount_minigames.get("success"):
     minigames_playercount = data_playercount_minigames["games"]
 
-    # CSV header
+    # CSV file path
     csv_file = "game_mode_player_counts.csv"
-    file_exists = os.path.isfile(csv_file)
 
+    # Delete the file if it already exists to ensure we write a new header
+    if os.path.exists(csv_file):
+        os.remove(csv_file)
+
+    # Write the new CSV with the updated header
     with open(csv_file, mode="a", newline="") as file:
         writer = csv.writer(file)
 
-        # Write header only if file is new
-        if not file_exists:
-            # Flatten out the game modes into the header
-            header = ["timestamp"]
-            for game, details in minigames_playercount.items():
-                if "modes" in details:  # This means it has subcategories (modes)
-                    # Loop through modes and add to header
-                    for mode in details["modes"]:
-                        header.append(f"{game}_{mode}")
-                else:
-                    # If it's a standalone game with no modes
-                    header.append(game)
-            writer.writerow(header)
+        # Write the header
+        header = ["timestamp"]
+        for game, details in minigames_playercount.items():
+            if "modes" in details:  # This means it has subcategories (modes)
+                header.append(game)  # Add the main game name
+                for mode in details["modes"]:
+                    header.append(f"{game}_{mode}")  # Add each mode as a subcategory
+            else:
+                header.append(game)  # Add the main game name
+        writer.writerow(header)
 
-        # Extract player counts per game and its modes (if any)
+        # Write the data row
         row = [timestamp]
         for game, details in minigames_playercount.items():
             if "modes" in details:
-                # If the game has subcategories (modes), add those counts
+                row.append(details["players"])  # Add the total player count for the game
                 for mode in details["modes"]:
-                    row.append(details["modes"][mode])
+                    row.append(details["modes"][mode])  # Add player count for each mode
             else:
-                # If it's a standalone game with no modes
-                row.append(details["players"])
-        
+                row.append(details["players"])  # Add the total player count for the game
         writer.writerow(row)
 
     print(f"Game Mode Data saved: {timestamp}")
 else:
     print(f"Error fetching game mode stats: {data_playercount_minigames.get('cause')}")
+
 
