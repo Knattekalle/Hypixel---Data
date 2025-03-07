@@ -8,7 +8,7 @@ API_KEY = os.getenv("HYPIXEL_API_KEY")
 # API URLs
 url_playercount = f"https://api.hypixel.net/playerCount?key={API_KEY}"
 url_punishments = f"https://api.hypixel.net/v2/punishmentstats?key={API_KEY}"
-url_playercount_minigames = f"https://api.hypixel.net/v2/counts?key{API_KEY}"
+url_playercount_minigames = f"https://api.hypixel.net/v2/counts?key={API_KEY}"
 
 # Fetch player count data
 response_playercount = requests.get(url_playercount)
