@@ -78,5 +78,5 @@ if data_playercount_minigames.get("success"):
 
     print(f"Game Mode Data saved: {timestamp}")
 else:
-    print(f"Error fetching game mode stats: {data_playercount_minigames .get('cause')}")
+    print(f"Error fetching game mode stats: {data_playercount_minigames.get('cause')}")
 
