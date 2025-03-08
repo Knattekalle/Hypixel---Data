@@ -33,6 +33,6 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add player_counts.csv punishment_stats.csv game_mode_player_counts.csv # Both files
+          git add player_counts.csv punishment_stats.csv main_games.csv sub_games.csv # Both files
           git commit -m "Updated player count data" || echo "No changes to commit"
           git push https://x-access-token:${GH_TOKEN}@github.com/Knattekalle/Hypixel---Data.git
