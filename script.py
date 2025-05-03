@@ -4,7 +4,7 @@ import os
 import datetime
 
 # API Keys & URLs
-API_KEY = os.getenv("HYPIXEL_API_KEY")
+API_KEY = os.getenv("SUBMITTED_HYPIXEL_API_KEY")
 API_PLAYERCOUNT = f"https://api.hypixel.net/playerCount?key={API_KEY}"
 API_PUNISHMENTS = f"https://api.hypixel.net/v2/punishmentstats?key={API_KEY}"
 API_GAMECOUNTS = f"https://api.hypixel.net/v2/counts?key={API_KEY}"
