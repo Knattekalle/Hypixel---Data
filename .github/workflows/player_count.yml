@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Python script
         env:
-          HYPIXEL_API_KEY: ${{ secrets.HYPIXEL_API_KEY }}
+          HYPIXEL_API_KEY: ${{ secrets.SUBMITTED_HYPIXEL_API_KEY }}
         run: python script.py  # Change to your actual script filename
 
       - name: Commit and push changes
